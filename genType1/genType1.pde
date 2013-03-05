@@ -17,7 +17,7 @@ int VOXEL_STROKE_WEIGHT=7;
 int SPHERE_RES=4;
 int SMOOTH_ITER=1;
 int LIFETIME=200;
-boolean drawMesh=false;
+boolean pause,drawMesh=false;
 int lifecycle, recordtime;
 
 Flock flock;
@@ -63,15 +63,16 @@ void draw() {
 	noFill(); stroke(255,50);
 	box(DIM*2);
 
-
-	if (lifecycle < LIFETIME) {
-		flock.run();
-		lifecycle++;
-	} else {
-		lifecycle = 0;
-		flock.fitness();
-		flock.selection();
-		flock.reproduction();
+	if(!pause) {
+		if (lifecycle < LIFETIME) {
+			flock.run();
+			lifecycle++;
+		} else {
+			lifecycle = 0;
+			flock.fitness();
+			flock.selection();
+			flock.reproduction();
+		}
 	}
 	
 	noFill();
@@ -100,9 +101,17 @@ void draw() {
 		else count=i;
 		
 		if(genPool.size()>0) {
-			text("Generation " + i + " at " + gen + " fitness", 10, 960-(18*count));
-			strokeWeight(2);stroke(255);
-			line(1024 - ( gen * 100 ), i, 1024, i);
+			text("Generation " + i + " at " + gen + " fitness", 280, 60+((genPool.size()-i)*18));
+			//line(1024 - ( gen * 100 ), i, 1024, i);
+			int pos = genPool.size()-i;
+			strokeWeight(1);stroke(127);
+			text("100%", 280,960-100-10);
+			line(300,960-100,1024,960-100);
+			text("50%", 280,960-50-10);
+			line(300,960-50,1024,960-50);
+			text("0%", 280,960-10);
+			strokeWeight(1);stroke(230);
+			line(pos+300,960-(gen*100), pos+300,960);
 		}
 	}
 
@@ -129,5 +138,13 @@ void mousePressed() {
 }
 
 void keyPressed() {
-	drawMesh = !drawMesh;
+	switch(key) {
+		case 'a':
+			drawMesh = !drawMesh;
+			break;
+		case ' ':
+			pause = !pause;
+			break;
+	} 
+	
 }

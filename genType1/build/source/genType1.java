@@ -41,7 +41,7 @@ int VOXEL_STROKE_WEIGHT=7;
 int SPHERE_RES=4;
 int SMOOTH_ITER=1;
 int LIFETIME=200;
-boolean drawMesh=false;
+boolean pause,drawMesh=false;
 int lifecycle, recordtime;
 
 Flock flock;
@@ -87,15 +87,16 @@ public void draw() {
 	noFill(); stroke(255,50);
 	box(DIM*2);
 
-
-	if (lifecycle < LIFETIME) {
-		flock.run();
-		lifecycle++;
-	} else {
-		lifecycle = 0;
-		flock.fitness();
-		flock.selection();
-		flock.reproduction();
+	if(!pause) {
+		if (lifecycle < LIFETIME) {
+			flock.run();
+			lifecycle++;
+		} else {
+			lifecycle = 0;
+			flock.fitness();
+			flock.selection();
+			flock.reproduction();
+		}
 	}
 	
 	noFill();
@@ -124,9 +125,14 @@ public void draw() {
 		else count=i;
 		
 		if(genPool.size()>0) {
-			text("Generation " + i + " at " + gen + " fitness", 10, 960-(18*count));
-			strokeWeight(2);stroke(255);
-			line(1024 - ( gen * 100 ), i, 1024, i);
+			text("Generation " + i + " at " + gen + " fitness", 10, 60+((genPool.size()-i)*18));
+			//line(1024 - ( gen * 100 ), i, 1024, i);
+			int pos = genPool.size()-i;
+			strokeWeight(1);stroke(127);
+			line(300,960-100,1024,960-100);
+			line(300,960-50,1024,960-50);
+			strokeWeight(1);stroke(230);
+			line(pos+300,960-(gen*100), pos+300,960);
 		}
 	}
 
@@ -153,7 +159,15 @@ public void mousePressed() {
 }
 
 public void keyPressed() {
-	drawMesh = !drawMesh;
+	switch(key) {
+		case 'a':
+			drawMesh = !drawMesh;
+			break;
+		case ' ':
+			pause = !pause;
+			break;
+	} 
+	
 }
 class DNA {
   Vec3D[] genes;
@@ -465,7 +479,7 @@ class Flock {
 		  boids.add( new Boid( 
 		  		new DNA(), 
 		  		NUM, 
-		  		new Vec3D(random(0,DIM),random(0,DIM),random(0,DIM)),
+		  		new Vec3D(/*random(0,DIM),random(0,DIM),random(0,DIM)*/),
 		  		3, 
 		  		0.05f, 
 		  		NEIGHBOR_DIST, 
@@ -562,9 +576,9 @@ class Flock {
       // Fill the new population with the new child
       //Vec3D location = new Vec3D(width/2,height+20);
       boids.set(i, new Boid( 
-		  		new DNA(), 
+		  		child,
 		  		NUM, 
-		  		new Vec3D(random(0,DIM),random(0,DIM),random(0,DIM)),
+		  		new Vec3D(/*random(0,DIM),random(0,DIM),random(0,DIM)*/),
 		  		3, 
 		  		0.05f, 
 		  		NEIGHBOR_DIST, 

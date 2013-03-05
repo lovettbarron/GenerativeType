@@ -16,7 +16,7 @@ class Flock {
 		  boids.add( new Boid( 
 		  		new DNA(), 
 		  		NUM, 
-		  		new Vec3D(random(0,DIM),random(0,DIM),random(0,DIM)),
+		  		new Vec3D(/*random(0,DIM),random(0,DIM),random(0,DIM)*/),
 		  		3, 
 		  		0.05, 
 		  		NEIGHBOR_DIST, 
@@ -113,9 +113,9 @@ class Flock {
       // Fill the new population with the new child
       //Vec3D location = new Vec3D(width/2,height+20);
       boids.set(i, new Boid( 
-		  		new DNA(), 
+		  		child,
 		  		NUM, 
-		  		new Vec3D(random(0,DIM),random(0,DIM),random(0,DIM)),
+		  		new Vec3D(/*random(0,DIM),random(0,DIM),random(0,DIM)*/),
 		  		3, 
 		  		0.05, 
 		  		NEIGHBOR_DIST, 
