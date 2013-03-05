@@ -125,12 +125,15 @@ public void draw() {
 		else count=i;
 		
 		if(genPool.size()>0) {
-			text("Generation " + i + " at " + gen + " fitness", 10, 60+((genPool.size()-i)*18));
+			text("Generation " + i + " at " + gen + " fitness", 280, 60+((genPool.size()-i)*18));
 			//line(1024 - ( gen * 100 ), i, 1024, i);
 			int pos = genPool.size()-i;
 			strokeWeight(1);stroke(127);
+			text("100%", 280,960-100-10);
 			line(300,960-100,1024,960-100);
+			text("50%", 280,960-50-10);
 			line(300,960-50,1024,960-50);
+			text("0%", 280,960-10);
 			strokeWeight(1);stroke(230);
 			line(pos+300,960-(gen*100), pos+300,960);
 		}
